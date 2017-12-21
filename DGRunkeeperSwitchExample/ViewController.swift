@@ -39,6 +39,7 @@ class ViewController: UIViewController {
         
         let runkeeperSwitch2 = DGRunkeeperSwitch()
         runkeeperSwitch2.titles = ["Daily", "Weekly", "Monthly", "Yearly"]
+        runkeeperSwitch2.unavailableTitles = ["Weekly"]
         runkeeperSwitch2.backgroundColor = UIColor(red: 239.0/255.0, green: 95.0/255.0, blue: 49.0/255.0, alpha: 1.0)
         runkeeperSwitch2.selectedBackgroundColor = .white
         runkeeperSwitch2.titleColor = .white
