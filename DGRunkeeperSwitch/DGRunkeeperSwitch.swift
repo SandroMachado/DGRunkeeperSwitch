@@ -52,6 +52,8 @@ open class DGRunkeeperSwitch: UIControl {
         }
         get { return titleLabels.map { $0.text! } }
     }
+    
+    open var unavailableTitles: [String] = []
 
     fileprivate(set) open var selectedIndex: Int? = 0
 
@@ -114,6 +116,13 @@ open class DGRunkeeperSwitch: UIControl {
         self.titles = titles
 
         finishInit()
+    }
+    
+    
+    public convenience init(titles: [String], unavailableTitles: [String]) {
+        self.init(titles: titles)
+        
+        self.unavailableTitles = unavailableTitles
     }
 
     required public init?(coder aDecoder: NSCoder) {
@@ -215,6 +224,10 @@ open class DGRunkeeperSwitch: UIControl {
 
             return
         }
+        
+        if (self.unavailableTitles.contains(self.titles[selectedIndex])) {
+            return
+        }
 
         // Reset switch on half pan gestures
         var catchHalfSwitch = false
@@ -252,7 +265,7 @@ open class DGRunkeeperSwitch: UIControl {
             selectedBackgroundView.isHidden = true
             selectedTitleLabels.forEach { $0.textColor = titleColor }
         }
-
+        
         (titleLabelsContentView.frame, selectedTitleLabelsContentView.frame) = (bounds, bounds)
 
         let titleLabelMaxWidth = selectedBackgroundWidth
@@ -260,6 +273,10 @@ open class DGRunkeeperSwitch: UIControl {
 
         zip(titleLabels, selectedTitleLabels).forEach { label, selectedLabel in
             let index = titleLabels.index(of: label)!
+            
+            if (self.unavailableTitles.contains(label.text!)) {
+                label.textColor = UIColor.gray
+            }
 
             var size = label.sizeThatFits(CGSize(width: titleLabelMaxWidth, height: titleLabelMaxHeight))
             size.width = min(size.width, titleLabelMaxWidth)
